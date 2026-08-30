@@ -1,40 +1,51 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #08070a;
-  --fg: #f8f5f7;
+  --background: #0b0a0f;
+  --foreground: #f8f4f6;
+  --card: #15131b;
+  --card-foreground: #f8f4f6;
+  --popover: #18151e;
+  --popover-foreground: #f8f4f6;
+  --primary: #f4779f;
+  --primary-foreground: #210c16;
+  --secondary: #24202d;
+  --secondary-foreground: #f8f4f6;
+  --muted: #211e29;
+  --muted-foreground: #a49ca9;
+  --accent: #9b8be8;
+  --accent-foreground: #100d1e;
+  --border: #2d2835;
+  --input: #2d2835;
+  --ring: #f4779f;
 }
 
-* {
-  box-sizing: border-box;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "DM Serif Display", Georgia, serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle at 50% -10%, rgba(255, 79, 145, 0.14), transparent 36%),
-    var(--bg);
-  color: var(--fg);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-button, a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.glass {
-  background: rgba(17, 16, 21, 0.76);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px);
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, #ff6aa5, #b59aff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--background); }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+::selection { background: color-mix(in srgb, var(--primary) 35%, transparent); }
+@media (prefers-reduced-motion: no-preference) { button, a { transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease, filter .2s ease; } }

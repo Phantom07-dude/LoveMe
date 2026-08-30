@@ -1,71 +1,58 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
 
 const features = [
-  ["🧠", "How Well Do You Know Me?", "Answer questions about each other and reveal your answers when you're both ready."],
-  ["👀", "Who Is More Likely?", "Find out who would oversleep, disappear, become famous, or start the chaos."],
-  ["📖", "Lore", "Keep the stories, inside jokes, moments and memories that belong to the two of you."],
-  ["🧠", "Deep Dive", "Ask the questions that go beyond small talk."],
-  ["🔞", "After Dark", "A separate 18+ space for the questions you wouldn't put anywhere else."],
-  ["⚔️", "Duel", "Compete head-to-head in reaction, memory and spot-the-difference games."],
+  { icon: "🧠", label: "Know Me", copy: "Answer for each other, then reveal what was really said." },
+  { icon: "👀", label: "More Likely", copy: "Point at the person who would absolutely do it." },
+  { icon: "📖", label: "Lore", copy: "Keep the tiny moments that only make sense to you two." },
+  { icon: "🫀", label: "Deep Dive", copy: "The questions that make a conversation stay up late." },
+  { icon: "🔞", label: "After Dark", copy: "A private, consensual space for grown-up honesty." },
+  { icon: "⚔️", label: "Duel", copy: "Fast little games for when you need to settle it." },
 ];
 
-export default function Home() {
+const connections = [
+  { name: "Sarah", avatar: "🌙", note: "12 questions waiting", activity: "Active 8m ago", tint: "from-rose-400/30 to-fuchsia-400/10" },
+  { name: "Mike", avatar: "🪩", note: "A new Lore entry", activity: "Active yesterday", tint: "from-violet-400/30 to-indigo-400/10" },
+];
+
+function Brand() {
+  return <div className="flex items-center gap-2 text-lg font-bold tracking-tight"><span className="grid size-8 place-items-center rounded-xl bg-primary text-primary-foreground shadow-[0_0_24px_rgba(246,112,158,.3)]"><span aria-hidden="true">♥</span></span>Love<span className="text-primary">Me</span></div>;
+}
+
+function AppPreview({ onClose }: { onClose: () => void }) {
+  const [active, setActive] = useState("home");
+  const [showInvite, setShowInvite] = useState(false);
+  const nav = [
+    ["home", "Your people", "⌂"],
+    ["lore", "Lore", "📖"],
+    ["duel", "Duel", "⚔️"],
+  ];
   return (
-    <main className="min-h-screen overflow-hidden">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 md:px-8">
-        <div className="text-2xl font-black">
-          Love<span className="gradient-text">Me</span>
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-background/95 px-4 py-5 backdrop-blur-xl sm:px-8">
+      <div className="mx-auto flex min-h-full max-w-5xl flex-col">
+        <header className="flex items-center justify-between py-2"><Brand /><button aria-label="Close preview" onClick={onClose} className="rounded-full border border-border p-2 text-muted-foreground transition hover:bg-card hover:text-foreground"><span aria-hidden="true">×</span></button></header>
+        <div className="mt-8 flex flex-1 flex-col gap-8 lg:flex-row">
+          <aside className="hidden w-56 shrink-0 lg:block"><p className="mb-5 px-3 text-xs font-semibold uppercase tracking-[.22em] text-muted-foreground">Your little world</p><div className="flex flex-col gap-1">{nav.map(([id, label, icon]) => <button key={id} onClick={() => setActive(id)} className={`flex items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-medium transition ${active === id ? "bg-primary/12 text-primary" : "text-muted-foreground hover:bg-card hover:text-foreground"}`}><span>{icon}</span>{label}</button>)}</div><div className="mt-8 rounded-3xl border border-border bg-card/70 p-4"><span className="mb-4 block text-primary" aria-hidden="true">⌁</span><p className="text-sm font-semibold">Just you two.</p><p className="mt-1 text-xs leading-5 text-muted-foreground">Everything here stays inside this connection.</p></div></aside>
+          <main className="flex-1 pb-8">
+            {active === "home" && <>
+              <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card p-6 sm:p-8"><div className="absolute -right-8 -top-12 size-40 rounded-full bg-primary/10 blur-3xl" /><p className="relative text-sm text-muted-foreground">Sunday, just after midnight</p><h1 className="relative mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Your people <span className="text-primary">♡</span></h1><p className="relative mt-2 max-w-md text-sm leading-6 text-muted-foreground">A quiet little corner of the internet, made for the people who matter.</p></div>
+              <div className="mt-7 flex items-center justify-between"><div><h2 className="text-xl font-semibold">Connections</h2><p className="mt-1 text-sm text-muted-foreground">Two-person worlds, kept separate.</p></div><button onClick={() => setShowInvite(true)} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:brightness-110"><span aria-hidden="true">+</span> Add someone</button></div>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">{connections.map((person) => <button key={person.name} onClick={() => setActive("lore")} className={`group relative min-h-48 overflow-hidden rounded-[1.75rem] border border-border bg-gradient-to-br ${person.tint} p-5 text-left transition hover:-translate-y-1 hover:border-primary/40`}><div className="absolute -bottom-8 -right-6 text-[9rem] opacity-20 grayscale transition group-hover:grayscale-0">{person.avatar}</div><div className="relative flex items-start justify-between"><span className="grid size-14 place-items-center rounded-2xl border border-white/10 bg-background/30 text-3xl shadow-inner">{person.avatar}</span><span className="text-lg text-muted-foreground transition group-hover:translate-x-1 group-hover:text-foreground" aria-hidden="true">›</span></div><div className="relative mt-7"><h3 className="text-xl font-semibold">You + {person.name}</h3><p className="mt-1 text-sm text-primary">{person.note}</p><p className="mt-3 text-xs text-muted-foreground">{person.activity}</p></div></button>)}</div>
+              <div className="mt-4 flex items-center gap-3 rounded-3xl border border-dashed border-border px-5 py-4 text-sm text-muted-foreground"><span className="text-primary" aria-hidden="true">✦</span> LoveMe gets better with someone.</div>
+            </>}
+            {active === "lore" && <section><button onClick={() => setActive("home")} className="mb-7 text-sm text-muted-foreground hover:text-foreground">← Back to your people</button><div className="rounded-[2rem] border border-border bg-card p-6 sm:p-8"><p className="text-3xl">📖</p><h1 className="mt-4 text-3xl font-semibold">Your Lore</h1><p className="mt-2 text-sm leading-6 text-muted-foreground">The stories, quotes, and tiny details that belong to you and Sarah.</p><div className="mt-7 rounded-3xl border border-dashed border-border p-7 text-center"><div className="mx-auto grid size-14 place-items-center rounded-2xl bg-primary/10 text-2xl">✦</div><h2 className="mt-4 font-semibold">Your story hasn&apos;t been written yet.</h2><p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-muted-foreground">Start with the moment you first realized this person was special.</p><button className="mt-5 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground">Add a memory</button></div></div></section>}
+            {active === "duel" && <section><button onClick={() => setActive("home")} className="mb-7 text-sm text-muted-foreground hover:text-foreground">← Back to your people</button><div className="rounded-[2rem] border border-border bg-card p-6 sm:p-8"><p className="text-3xl">⚔️</p><h1 className="mt-4 text-3xl font-semibold">Duel Sarah</h1><p className="mt-2 text-sm leading-6 text-muted-foreground">A little competition, kept between the two of you.</p><div className="mt-7 grid gap-3 sm:grid-cols-3">{[["⚡","Reaction Test","Tap first"],["◈","Memory","Match pairs"],["✦","Spot the Difference","Find it" ]].map(([icon, title, copy]) => <button key={title} className="rounded-3xl border border-border bg-background/40 p-4 text-left transition hover:border-primary/50 hover:bg-primary/5"><span className="text-2xl">{icon}</span><h2 className="mt-5 font-semibold">{title}</h2><p className="mt-1 text-xs text-muted-foreground">{copy}</p></button>)}</div></div></section>}
+          </main>
         </div>
-
-        <div className="flex gap-2">
-          <Link href="/login" className="rounded-full px-4 py-2 text-sm font-semibold text-zinc-300 hover:bg-white/5">
-            Log in
-          </Link>
-          <Link href="/signup" className="rounded-full bg-white px-5 py-2 text-sm font-bold text-black">
-            Get started
-          </Link>
-        </div>
-      </nav>
-
-      <section className="mx-auto max-w-5xl px-5 pb-20 pt-16 text-center md:pt-24">
-        <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-pink-400/20 bg-pink-400/5 px-4 py-2 text-sm text-pink-200">
-          ❤️ A private space for two
-        </div>
-
-        <h1 className="mx-auto max-w-4xl text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">
-          How well do you <span className="gradient-text">really</span> know each other?
-        </h1>
-
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-zinc-400 md:text-lg">
-          LoveMe turns your relationship into a private little world of questions,
-          inside jokes, deep thoughts, memories and games.
-        </p>
-
-        <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/signup" className="rounded-2xl bg-white px-7 py-4 font-bold text-black">
-            Create your LoveMe
-          </Link>
-          <Link href="#features" className="rounded-2xl border border-white/10 px-7 py-4 font-semibold text-white">
-            Explore features
-          </Link>
-        </div>
-      </section>
-
-      <section id="features" className="mx-auto max-w-6xl px-5 pb-24 md:px-8">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {features.map(([icon, title, text]) => (
-            <div key={title} className="glass rounded-3xl p-6">
-              <div className="text-3xl">{icon}</div>
-              <h3 className="mt-5 text-lg font-bold">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-zinc-400">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <footer className="border-t border-white/5 px-5 py-8 text-center text-sm text-zinc-600">
-        LoveMe — made for two.
-      </footer>
-    </main>
+        <nav className="sticky bottom-3 mx-auto mt-auto flex w-full max-w-sm items-center justify-around rounded-full border border-border bg-card/90 p-2 shadow-2xl backdrop-blur lg:hidden">{nav.map(([id, label, icon]) => <button key={id} onClick={() => setActive(id)} className={`flex min-w-20 flex-col items-center gap-1 rounded-full px-3 py-2 text-xs ${active === id ? "bg-primary/12 text-primary" : "text-muted-foreground"}`}><span>{icon}</span>{label}</button>)}</nav>
+      </div>
+      {showInvite && <div className="fixed inset-0 z-10 grid place-items-center bg-background/70 p-4 backdrop-blur-sm"><div className="w-full max-w-sm rounded-[2rem] border border-border bg-card p-6 shadow-2xl"><div className="flex items-center justify-between"><h2 className="text-xl font-semibold">Invite your person</h2><button onClick={() => setShowInvite(false)} aria-label="Close invite dialog"><span aria-hidden="true">×</span></button></div><p className="mt-2 text-sm leading-6 text-muted-foreground">Send a private invite. Once they join, this space belongs to only you two.</p><div className="mt-5 rounded-2xl bg-background px-4 py-3 text-sm text-primary">loveme.app/invite/moonlit-7x2k</div><button onClick={() => setShowInvite(false)} className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-primary font-semibold text-primary-foreground">Copy invite link <span aria-hidden="true">→</span></button></div></div>}
+    </div>
   );
+}
+
+export default function Home() {
+  const [preview, setPreview] = useState(false);
+  return <main className="min-h-screen overflow-hidden"><div className="mx-auto max-w-6xl px-5 sm:px-8"><nav className="flex items-center justify-between py-6"><Brand /><div className="flex items-center gap-2"><a href="#features" className="hidden rounded-full px-4 py-2 text-sm text-muted-foreground hover:text-foreground sm:block">What&apos;s inside</a><button onClick={() => setPreview(true)} className="rounded-full border border-border px-4 py-2 text-sm font-semibold transition hover:bg-card">Log in</button></div></nav><section className="relative flex min-h-[650px] flex-col items-center justify-center py-20 text-center"><div className="pointer-events-none absolute left-1/2 top-20 -z-10 size-[28rem] -translate-x-1/2 rounded-full bg-primary/10 blur-[100px]" /><div className="mb-7 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-2 text-xs font-semibold uppercase tracking-[.18em] text-primary"><span aria-hidden="true">✦</span> A private space for two</div><h1 className="max-w-4xl text-balance font-serif text-5xl leading-[.98] tracking-tight sm:text-7xl lg:text-8xl">How well do you <em className="text-primary">really</em> know each other?</h1><p className="mt-7 max-w-xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg">A private little world for questions, inside jokes, deep thoughts, memories, and games — made for exactly two people.</p><div className="mt-9 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row"><button onClick={() => setPreview(true)} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-primary px-7 font-semibold text-primary-foreground shadow-[0_12px_35px_rgba(246,112,158,.2)] transition hover:-translate-y-0.5 hover:brightness-110">Create your LoveMe <span aria-hidden="true">→</span></button><button onClick={() => setPreview(true)} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-border bg-card/40 px-7 font-semibold transition hover:bg-card"><span aria-hidden="true">⌁</span> See the inside</button></div><div className="mt-14 flex items-center gap-3 text-xs text-muted-foreground"><span className="flex -space-x-2"><span className="grid size-8 place-items-center rounded-full border-2 border-background bg-rose-200">🌸</span><span className="grid size-8 place-items-center rounded-full border-2 border-background bg-violet-200">🌙</span><span className="grid size-8 place-items-center rounded-full border-2 border-background bg-amber-100">🪩</span></span><span>Made for couples, best friends, siblings &amp; soulmates.</span></div></section><section id="features" className="pb-24"><div className="mb-8 flex items-end justify-between"><div><p className="text-xs font-semibold uppercase tracking-[.2em] text-primary">Inside LoveMe</p><h2 className="mt-3 font-serif text-4xl">A world with no audience.</h2></div><span className="mb-1 hidden text-lg text-muted-foreground sm:block" aria-hidden="true">?</span></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{features.map((feature, index) => <article key={feature.label} className={`group rounded-[1.6rem] border border-border bg-card/50 p-6 transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-card ${index === 0 ? "sm:col-span-2 lg:col-span-1" : ""}`}><div className="flex items-start justify-between"><span className="text-3xl">{feature.icon}</span><span className="text-lg text-muted-foreground transition group-hover:translate-x-1 group-hover:text-primary" aria-hidden="true">›</span></div><h3 className="mt-7 text-lg font-semibold">{feature.label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{feature.copy}</p></article>)}</div></section><footer className="flex flex-col gap-4 border-t border-border py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><Brand /><span>Made for two. Nothing else.</span></footer></div>{preview && <AppPreview onClose={() => setPreview(false)} />}</main>;
 }
