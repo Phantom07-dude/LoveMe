@@ -1,5 +1,6 @@
 "use client"
 import { FormEvent, useEffect, useMemo, useState } from "react"
+import { Check, Copy } from "lucide-react"
 import { authIdentifier, createClient } from "@/lib/supabase/client"
 import { acceptInvite, addCustomQuestion, addLoreEntry, createConnection, createInvite, createQuestionRound, giveConsent, revealQuestionRound, saveDuelMove, saveQuestionAnswer, saveReaction, setAfterDarkEnabled, startDuel } from "@/lib/loveme/data"
 
