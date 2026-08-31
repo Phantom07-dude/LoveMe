@@ -1,7 +1,7 @@
 "use client"
 import { FormEvent, useEffect, useMemo, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
-import { acceptInvite, addCustomQuestion, addLoreEntry, createConnection, createInvite, giveConsent, saveDuelMove, saveQuestionAnswer, saveReaction, setAfterDarkEnabled, startDuel } from "@/lib/loveme/data"
+import { acceptInvite, addCustomQuestion, addLoreEntry, createConnection, createInvite, createQuestionRound, giveConsent, revealQuestionRound, saveDuelMove, saveQuestionAnswer, saveReaction, setAfterDarkEnabled, startDuel } from "@/lib/loveme/data"
 
 type User = { id: string; user_metadata?: Record<string, unknown> }
 type Profile = { id: string; username: string; display_name: string; avatar_emoji: string; is_adult: boolean; onboarding_complete: boolean }

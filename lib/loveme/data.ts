@@ -14,4 +14,7 @@ export async function startDuel(connectionId: string, userId: string) { const { 
 export async function saveDuelMove(sessionId: string, userId: string, moveType: string, payload: Record<string, unknown>) { const { error } = await getClient().from("duel_moves").upsert({ session_id: sessionId, user_id: userId, move_type: moveType, payload }, { onConflict: "session_id,user_id,move_type" }); if (error) throw error }
 export async function acceptInvite(token: string, userId: string) { const { data, error } = await getClient().rpc("accept_connection_invite", { invite_token_hash: await hashInviteToken(token), joining_user: userId }); if (error) throw error; return data as string }
 
+export async function createQuestionRound(input: { connectionId: string; questionId: string; userId: string }) { const client = getClient(); const { data, error } = await client.from("question_rounds").insert({ connection_id: input.connectionId, question_id: input.questionId, created_by: input.userId }).select("id").single(); if (error) throw error; return data.id as string }
+export async function revealQuestionRound(roundId: string) { const { data, error } = await getClient().rpc("reveal_question_round", { round_id: roundId }); if (error) throw error; return Boolean(data) }
+
 export type LovemeClient = ReturnType<typeof createClient>
